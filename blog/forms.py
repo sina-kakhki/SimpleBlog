@@ -16,4 +16,5 @@ class CreatePostForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'class': 'form-content'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
             'author': forms.Select(attrs={'class': 'form-control'}),
+            'post_image': forms.FileInput(attrs={'class': 'form-control'}),
         }
