@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% block title %}
     {{ post.title }}
 {% endblock %}
@@ -6,8 +6,33 @@
 {% block content %}
     {{ post.body }} </br>
     {% if post.post_image %}
-        <img src="{{ post.post_image.url }}" width="100px" height="100px">
+        <img src="{{ post.post_image.url }}" width="1000px" height="580px">
     {% endif %}
-    {{ post.author }} </br>
+    {{ post.author.first_name }} - {{ post.author.last_name }} </br>
     {{ post.category }}
+
+
+    <p>Likes: {{ post.likes.count }}</p>
+    <form action="{% url 'like_post' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        {% if user in post.likes.all %}
+            <button>unlike</button>
+        {% else %}
+            <button>like</button>
+        {% endif %}
+    </form>
+    {% for comment in post.comments_set.all %}
+        <div>
+            {{ comment.comment | safe }} - {{ comment.user.username }}
+        </div>
+    {% endfor %}
+    {% if user.is_authenticated %}
+        <form action="{% url 'add_comment' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="post_id" value="{{ post.id }}">
+            comment: <textarea name="comment"></textarea>
+            <button>add comment</button>
+        </form>
+    {% endif %}
 {% endblock %}

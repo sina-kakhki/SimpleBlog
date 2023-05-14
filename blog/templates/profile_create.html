@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% block title %}Create Profile{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+
+
+{% endblock %}

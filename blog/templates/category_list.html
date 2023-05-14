@@ -1,10 +1,27 @@
 {% extends 'base.html' %}
-{% block title %}Blog Categories{% endblock %}
+{% block title %}
+    home
+{% endblock %}
+
 {% block content %}
-    <h1>Blog Categories</h1>
-<ul>
-    {% for category in category_list %}
-        <li><a href="{% url 'category-detail' category.id %}">{{ category.name }}</a></li>
-    {% endfor %}
-</ul>
+    <!-- only superuser can create the post -->
+    {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+            <a href="{% url 'post_create' %}" class="btn btn-primary">New Category</a>
+        {% endif %}
+    {% endif %}
+
+    <ul>
+        {% for category in object_list %}
+            <li>
+            <a href="{% url 'category_detail' category.id %}">{{ category.name }}</a>
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <a class="btn btn-secondary" href="{% url 'category_update' post.id %}">Update</a>
+                    <a class="btn btn-danger" href="{% url 'category_delete' post.id %}">Delete</a>
+                {% endif %}
+            {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
