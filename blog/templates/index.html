@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
 {% block title %}
-Home
+home
 {% endblock %}
 
 {% block content %}
+    <!-- only authenticated used can create the post -->
     {% if user.is_authenticated %}
-        {% if 'author' in user.groups.all.0.name %}
-            <a href="{% url 'post_create' %}" class='btn btn-success'>New Post</a>
-        {% endif %}
+    <!-- Author IN the group -->
+{#        {% if "author" in user.groups.all.0.name %}#}
+            <a href="{% url 'post_create' %}" class="btn btn-primary">New Post</a>
+{#        {% endif %}#}
     {% endif %}
     <ul>
         {% for post in object_list %}
-        <li>
-            <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a> - {{ post.category }}
-            {% if user.is_authenticated %}
-                {% if user == post.author %}
+            <li><a href=" {% url 'post_detail' post.id %}">{{ post.title }}</a> - {{ post.category }}
+                <!-- only authenticated used can update and delete the post -->
+                {% if user.is_authenticated %}
                     <a class="btn btn-secondary" href="{% url 'post_update' post.id %}">Update</a>
-                    <a class="btn btn-danger" href="{% url 'post_delete' post.id %}">Delete</a>
+                    <a class="btn btn-danger" href= "{% url 'post_delete' post.id %}">Delete</a>
                 {% endif %}
-             {% endif %}
-        </li>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}
